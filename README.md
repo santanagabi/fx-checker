@@ -1,6 +1,6 @@
 # 💱 FX Checker
 
-> Aplicação Angular de conversão de câmbio em tempo real, construída como projeto de estudo para entrevistas de Desenvolvedor Front-End Angular.
+> Aplicação Angular de conversão de câmbio em tempo real 
 
 ![Angular](https://img.shields.io/badge/Angular-19-DD0031?style=for-the-badge&logo=angular)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=for-the-badge&logo=typescript)
