@@ -56,6 +56,7 @@ https://github.com/user-attachments/assets/YOUR_VIDEO_ID
 - Automatic conversion while typing
 - Favorite currency pairs
 - Save conversion history
+<img width="1365" height="582" alt="image" src="https://github.com/user-attachments/assets/94c0f680-ef79-4406-b6ce-b325c132b5ee" />
 
 ### Market Dashboard
 
