@@ -1,6 +1,6 @@
 # 💱 FX Checker
 
-> Aplicação Angular de conversão de câmbio em tempo real 
+> Modern currency exchange application built with Angular, featuring real-time exchange rates, market monitoring, historical data visualization, and currency comparison.
 
 ![Angular](https://img.shields.io/badge/Angular-19-DD0031?style=for-the-badge&logo=angular)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=for-the-badge&logo=typescript)
@@ -9,232 +9,305 @@
 
 ---
 
-## 📋 Sobre o Projeto
+## 📖 About
 
-**FX Checker** é um conversor de câmbio moderno baseado no desafio *"Foreign Exchange Currency Converter"* do Frontend Mentor.
+**FX Checker** is a modern currency exchange application built with **Angular 19**.
 
-O objetivo é **duplo**:
-1. Construir uma aplicação funcional e visualmente premium
-2. Praticar os principais conceitos do Angular 
+The project consumes exchange rate data from the **Frankfurter API**, which provides rates based on the **European Central Bank (ECB)**.
 
-Todos os dados vêm da **Frankfurter API** — gratuita, sem necessidade de API key, baseada nos dados do **Banco Central Europeu**.
+Besides offering a clean and responsive user interface, the project demonstrates modern Angular development practices such as Standalone Components, Signals, RxJS, Lazy Loading, Reactive Forms, HTTP Interceptors, and reusable architecture.
 
 ---
 
-## ✨ Funcionalidades
+# 📸 Demo
 
-| Página | Funcionalidades |
-|---|---|
-| **Conversor** (`/`) | Conversão em tempo real, swap de moedas, favoritar pares, salvar conversão |
-| **Mercado** (`/market`) | Ticker ao vivo com 8 pares, gráfico de histórico com 6 rangos de tempo |
-| **Comparação** (`/comparison`) | Converte para múltiplas moedas simultaneamente, barras visuais comparativas |
-| **Histórico** (`/history`) | Log de conversões com tempo relativo, remoção individual ou total |
+## Application Preview
 
-**Extras:**
-- ⭐ Favoritos persistidos no LocalStorage
-- 📋 Log de conversões (até 50 entradas) persistido no LocalStorage
-- 📱 Layout responsivo (mobile, tablet, desktop)
-- ♿ Navegação por teclado e atributos ARIA
-- 🌙 Dark mode premium com glassmorphism
+> Add a screenshot of the application here.
+
+![FX Checker Preview](./docs/images/preview.png)
 
 ---
 
-## 🛠️ Tecnologias e Conceitos Angular
+## Video Demonstration
 
-| Conceito | Onde é usado |
-|---|---|
-| Standalone Components | Todos os componentes (sem NgModules) |
-| Dependency Injection | `inject()` em todos os services e componentes |
-| Services | `ExchangeRateService`, `StorageService`, `FavoritesService`, `ConversionLogService` |
-| HttpClient | `ExchangeRateService` — todas as chamadas à API |
-| Observables + RxJS | Pipeline de conversão, ticker, gráfico |
-| `subscribe()` | Comparação de moedas (efeito imperativo) |
-| `async pipe` | Conversor (currencies$, result$) |
-| `@Input / @Output` | `CurrencyPickerComponent`, `RateChartComponent`, `SwapButtonComponent` |
-| Routing | 4 rotas com lazy loading via `loadComponent()` |
-| Lazy Loading | Cada página é um chunk separado |
-| `*ngFor / *ngIf` | Todos os templates |
-| Loading state | Signals + spinner em todas as páginas |
-| Tratamento de erro | `catchError` + `httpErrorInterceptor` |
-| Interfaces TypeScript | `Currency`, `ExchangeRateResponse`, `ConversionLog`... |
-| Pipes customizados | `RateChangePipe`, `CurrencyFormatPipe` |
-| Reactive Forms | Conversor e Comparação |
-| Signals | `FavoritesService`, `ConversionLogService`, estados locais |
-| `computed()` | `maxResult` na Comparação, `activeTickerItem` no Mercado |
-| `debounceTime` | Campo de busca do CurrencyPicker, conversão automática |
-| `distinctUntilChanged` | Evita chamadas duplicadas na conversão |
-| `switchMap` | Cancela requests anteriores (conversor, gráfico) |
-| `forkJoin` | Ticker do mercado (8 requisições em paralelo) |
-| `interval` | Polling do ticker a cada 60s |
-| `shareReplay(1)` | Cache da lista de moedas |
-| `startWith` | Dispara a 1ª conversão/polling automaticamente |
-| `catchError` | Tratamento de erros sem quebrar o stream |
-| `finalize` | Reset de loading após sucesso OU erro |
-| `HttpInterceptorFn` | Interceptor funcional para erros globais |
-| Environment | `environment.ts` / `environment.prod.ts` |
-| `ViewChild` | Acesso ao `<canvas>` do Chart.js |
-| `ngAfterViewInit` | Inicialização do Chart.js após o DOM existir |
-| `ngOnChanges` | Re-carrega o gráfico ao trocar par/range |
-| `HostListener` | Fechar dropdown ao clicar fora |
-| `trackBy` | Performance do `*ngFor` |
+> Add a GIF or a screen recording showing the application's main features.
 
----
+Example:
 
-## 🚀 Como Rodar
-
-### Pré-requisitos
-
-- [Node.js](https://nodejs.org/) v18 ou superior
-- [npm](https://www.npmjs.com/) v9 ou superior
-- [Angular CLI](https://angular.io/cli) v19
-
-```bash
-# Verificar versões
-node --version
-npm --version
-ng version
+```
+docs/
+└── videos/
+    └── demo.mp4
 ```
 
-### Passo a Passo
+Or upload a GitHub Asset and replace the link below.
 
-**1. Clone o repositório**
+https://github.com/user-attachments/assets/YOUR_VIDEO_ID
+
+---
+
+## ✨ Features
+
+### Currency Converter
+
+- Real-time currency conversion
+- Currency swap
+- Automatic conversion while typing
+- Favorite currency pairs
+- Save conversion history
+
+### Market Dashboard
+
+- Live exchange rate ticker
+- Historical exchange rate chart
+- Multiple time ranges
+- Automatic polling
+
+### Currency Comparison
+
+- Convert one value to multiple currencies
+- Visual comparison bars
+- Fast comparison between exchange rates
+
+### Conversion History
+
+- Persistent conversion history
+- Relative timestamps
+- Individual deletion
+- Clear entire history
+
+---
+
+## 🎯 Highlights
+
+- Angular 19
+- Standalone Components
+- Signals
+- RxJS
+- Lazy Loading
+- Reactive Forms
+- Dependency Injection
+- Functional HTTP Interceptors
+- Chart.js integration
+- LocalStorage persistence
+- Responsive UI
+- Accessibility (ARIA + keyboard navigation)
+- Dark Theme
+- Glassmorphism Design
+
+---
+
+# 🛠 Technologies
+
+| Technology | Description |
+|------------|-------------|
+| Angular 19 | Front-end framework |
+| TypeScript | Main language |
+| RxJS | Reactive programming |
+| Angular Signals | Local state management |
+| Reactive Forms | Forms and validation |
+| Angular Router | Navigation |
+| HttpClient | API communication |
+| Chart.js | Historical charts |
+| SCSS | Styling |
+| LocalStorage | Local persistence |
+
+---
+
+# 🧩 Angular Concepts Used
+
+| Concept | Usage |
+|----------|------|
+| Standalone Components | Entire application |
+| Dependency Injection | Services and components |
+| HttpClient | API requests |
+| Signals | Local state |
+| Computed Signals | Derived state |
+| Observables | API streams |
+| Async Pipe | Template subscriptions |
+| switchMap | Cancel previous requests |
+| forkJoin | Parallel requests |
+| debounceTime | Search and auto conversion |
+| distinctUntilChanged | Avoid duplicate requests |
+| interval | Market polling |
+| shareReplay | Currency cache |
+| catchError | Error handling |
+| finalize | Loading state |
+| Functional Interceptors | Global HTTP errors |
+| Lazy Loading | Route loading |
+| ViewChild | Chart initialization |
+| HostListener | Close dropdown |
+| trackBy | List performance |
+
+---
+
+# 🚀 Getting Started
+
+## Requirements
+
+- Node.js 18+
+- npm 9+
+- Angular CLI 19+
+
+## Clone
+
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/YOUR_USERNAME/fx-checker.git
+```
+
+```bash
 cd fx-checker
 ```
 
-**2. Instale as dependências**
+## Install
+
 ```bash
 npm install
 ```
 
-**3. Rode em modo de desenvolvimento**
+## Development
+
 ```bash
 npm start
-# ou
+```
+
+or
+
+```bash
 ng serve
 ```
 
-**4. Acesse no browser**
+Open
+
 ```
 http://localhost:4200
 ```
 
-A aplicação recarrega automaticamente quando você editar qualquer arquivo.
-
 ---
 
-## 📁 Estrutura do Projeto
+# 📁 Project Structure
 
 ```
-src/app/
-├── core/
-│   └── interceptors/
-│       └── http-error.interceptor.ts   # Tratamento centralizado de erros HTTP
-│
-├── services/
-│   ├── exchange-rate.service.ts        # Toda a comunicação com a Frankfurter API
-│   ├── storage.service.ts              # Abstração do LocalStorage (genérica)
-│   ├── favorites.service.ts            # Gerencia favoritos com Signals
-│   └── conversion-log.service.ts      # Gerencia histórico com Signals
-│
-├── interfaces/
-│   ├── currency.interface.ts           # Currency, CurrencyPair
-│   ├── exchange-rate.interface.ts      # ExchangeRateResponse, ConversionResult...
-│   └── conversion-log.interface.ts    # ConversionLog
-│
-├── models/
-│   └── chart-range.model.ts           # ChartRange type + CHART_RANGE_OPTIONS
-│
-├── shared/
-│   └── constants.ts                   # STORAGE_KEYS, TICKER_PAIRS, POLL_INTERVAL_MS
-│
-├── pipes/
-│   ├── rate-change.pipe.ts            # Formata +1.23% / -0.45%
-│   └── currency-format.pipe.ts        # Formata R$ 4.970,00 via Intl
-│
-├── components/
-│   ├── currency-picker/               # Dropdown com busca (standalone)
-│   ├── swap-button/                   # Botão de inversão com animação
-│   └── rate-chart/                    # Gráfico Chart.js com ViewChild
-│
-├── pages/
-│   ├── converter/                     # Rota: /
-│   ├── market/                        # Rota: /market
-│   ├── comparison/                    # Rota: /comparison
-│   └── history/                       # Rota: /history
-│
-├── app.component.ts                   # Shell: navbar + RouterOutlet
-├── app.config.ts                      # Providers: Router, HttpClient, Interceptor
-└── app.routes.ts                      # Rotas com Lazy Loading
-│
 src/
+│
+├── app/
+│   ├── components/
+│   ├── core/
+│   ├── interfaces/
+│   ├── models/
+│   ├── pages/
+│   ├── pipes/
+│   ├── services/
+│   └── shared/
+│
 ├── environments/
-│   ├── environment.ts                 # { apiUrl, production: false }
-│   └── environment.prod.ts            # { apiUrl, production: true }
-├── styles.scss                        # Design system global (CSS custom properties)
-└── index.html                         # HTML raiz (Google Fonts, meta tags)
+│
+└── styles.scss
 ```
 
 ---
 
-## 🌐 API — Frankfurter
+# 🌐 API
 
-Base URL: `https://api.frankfurter.app`
+This project consumes data from the **Frankfurter API**.
 
-| Endpoint | Descrição | Exemplo |
-|---|---|---|
-| `GET /currencies` | Lista todas as moedas | `/currencies` |
-| `GET /latest` | Taxa atual de um par | `/latest?from=USD&to=BRL` |
-| `GET /latest` | Taxas para múltiplas moedas | `/latest?from=USD&to=BRL,EUR,GBP` |
-| `GET /{data}..` | Histórico desde uma data | `/2024-01-01..?from=USD&to=BRL` |
+Base URL
 
-> **Nota:** A Frankfurter API atualiza os dados 1x por dia (dias úteis) baseado no BCE. O polling a cada 60s demonstra o padrão técnico mesmo que os dados não mudem em tempo real.
+```
+https://api.frankfurter.app
+```
+
+| Endpoint | Description |
+|-----------|-------------|
+| GET /currencies | List currencies |
+| GET /latest | Current exchange rate |
+| GET /latest?to= | Multiple currencies |
+| GET /{date}.. | Historical data |
+
+Exchange rates are based on data published by the **European Central Bank (ECB)**.
 
 ---
 
-## 🏗️ Build para Produção
+# 🏗 Production Build
 
 ```bash
 ng build
 ```
 
-Os arquivos serão gerados em `dist/fx-checker/browser/`.
+Production files are generated inside
+
+```
+dist/fx-checker/browser
+```
 
 ---
 
-## 🧪 Testes
+# 🧪 Running Tests
 
 ```bash
-# Executar testes unitários
 npm test
+```
 
-# Com cobertura
+Coverage
+
+```bash
 ng test --code-coverage
 ```
 
 ---
 
-## 💡 Conceitos-chave para a Entrevista
+# 🗺 Roadmap
 
-### Por que Standalone Components?
-Eliminam a necessidade de NgModules. Cada componente declara suas próprias dependências via `imports: []`. Mais simples, mais tree-shakable, mais testável.
+Future improvements planned for the project:
 
-### Por que `switchMap` no conversor?
-Se o usuário troca de moeda enquanto uma requisição está em voo, `switchMap` **cancela** a anterior e inicia uma nova. Sem ele: race condition — a resposta mais antiga pode chegar depois da mais recente.
-
-### Por que `forkJoin` no ticker?
-Dispara 8 requisições em **paralelo** e emite apenas quando todas completam. Alternativa sequencial seria ~8x mais lenta.
-
-### Quando usar Signal vs Observable?
-- **Signal**: estado local síncrono (favoritos, log, loading, flags)
-- **Observable**: fluxos assíncronos (HTTP, formulários, polling, timers)
-
-### Por que `shareReplay(1)` na lista de moedas?
-Dois `CurrencyPickerComponent` (origem e destino) precisam da mesma lista. `shareReplay(1)` garante que apenas **uma** requisição HTTP seja feita, e o resultado em cache é entregue para ambos os subscribers.
+- [ ] Authentication
+- [ ] Multi-language support (i18n)
+- [ ] PWA support
+- [ ] Offline mode
+- [ ] More exchange rate providers
+- [ ] Custom dashboards
+- [ ] Advanced charts
+- [ ] Export conversion history
+- [ ] Theme customization
+- [ ] Unit and E2E test coverage improvements
+- [ ] Docker support
+- [ ] CI/CD pipeline
+- [ ] GitHub Actions automation
+- [ ] Organize project documentation using **Harness Specs** to improve AI-assisted development workflows and maintain structured project knowledge.
 
 ---
 
-## 📝 Licença
+# 📚 Documentation
 
-MIT — sinta-se livre para usar e modificar para seus estudos.
+Future documentation will include:
+
+- Architecture overview
+- Component documentation
+- Service documentation
+- API integration guide
+- Development guidelines
+- Contribution guide
+- Harness Specs for AI context and project organization
+
+---
+
+# 🤝 Contributing
+
+Contributions, suggestions and improvements are welcome.
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+Made with ❤️ using Angular.
