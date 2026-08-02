@@ -15,7 +15,7 @@
 
 O objetivo é **duplo**:
 1. Construir uma aplicação funcional e visualmente premium
-2. Praticar os principais conceitos do Angular para entrevistas técnicas
+2. Praticar os principais conceitos do Angular 
 
 Todos os dados vêm da **Frankfurter API** — gratuita, sem necessidade de API key, baseada nos dados do **Banco Central Europeu**.
 
