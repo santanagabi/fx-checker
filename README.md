@@ -21,62 +21,93 @@ Besides offering a clean and responsive user interface, the project demonstrates
 
 # 📸 Demo
 
-## Application Preview
+## 🎥 Application Walkthrough
 
-> Add a screenshot of the application here.
+A quick overview of the main features available in FX Checker.
 
-![FX Checker Preview](./docs/images/preview.png)
+### Currency Conversion
 
----
-
-## Video Demonstration
-
-> Add a GIF or a screen recording showing the application's main features.
-
-Example:
-
-```
-docs/
-└── videos/
-    └── demo.mp4
-```
-
-Or upload a GitHub Asset and replace the link below.
-
-https://github.com/user-attachments/assets/YOUR_VIDEO_ID
+https://github.com/user-attachments/assets/85790607-b529-4090-a8f0-34f637f21177
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### Currency Converter
+## 💱 Currency Converter
+
+Convert currencies with automatic updates, favorites and conversion history.
+
+### Features
 
 - Real-time currency conversion
 - Currency swap
 - Automatic conversion while typing
 - Favorite currency pairs
-- Save conversion history
-<img width="1365" height="582" alt="image" src="https://github.com/user-attachments/assets/94c0f680-ef79-4406-b6ce-b325c132b5ee" />
+- Conversion history persistence
 
-### Market Dashboard
+
+### Preview
+
+<img width="1365" height="582" alt="Currency Converter" src="https://github.com/user-attachments/assets/94c0f680-ef79-4406-b6ce-b325c132b5ee" />
+
+<img width="1914" height="890" alt="Currency Converter Dark Mode" src="https://github.com/user-attachments/assets/cacdce1d-eb70-4944-ac81-1236e4a8c6b5" />
+
+---
+
+## 📈 Market Dashboard
+
+A dashboard to monitor exchange rates with charts and automatic updates.
+
+### Features
 
 - Live exchange rate ticker
-- Historical exchange rate chart
+- Historical exchange rate charts
 - Multiple time ranges
-- Automatic polling
+- Automatic polling updates
 
-### Currency Comparison
 
-- Convert one value to multiple currencies
+### Preview
+
+<img width="1918" height="884" alt="Market Dashboard" src="https://github.com/user-attachments/assets/82f82d0a-2b32-4d14-b3b1-12c61faa8dd3" />
+
+---
+
+## 🔄 Currency Comparison
+
+Compare multiple currencies simultaneously.
+
+### Features
+
+- Convert one value into multiple currencies
 - Visual comparison bars
-- Fast comparison between exchange rates
+- Fast exchange comparison
 
-### Conversion History
+
+### Preview
+
+<img width="1905" height="889" alt="Currency Comparison" src="https://github.com/user-attachments/assets/83fd57ad-61bd-478a-b284-ca604599580c" />
+
+<img width="1908" height="886" alt="Currency Comparison Results" src="https://github.com/user-attachments/assets/fdc7e39b-3cea-4909-9c10-0ef23147adfb" />
+
+<img width="1913" height="910" alt="Currency Comparison Charts" src="https://github.com/user-attachments/assets/96cf7db5-5473-42f0-8734-ddd8b9f7c283" />
+
+---
+
+## 🕒 Conversion History
+
+Track previous conversions with local persistence.
+
+### Features
 
 - Persistent conversion history
 - Relative timestamps
 - Individual deletion
-- Clear entire history
+- Clear all history
+
+
+### Preview
+
+<img width="1916" height="898" alt="Conversion History" src="https://github.com/user-attachments/assets/83a9ba77-2bcc-4cab-9e83-1409367160bf" />
 
 ---
 
