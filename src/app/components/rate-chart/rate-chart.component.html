@@ -1,0 +1,19 @@
+<div class="chart-wrapper">
+  <!-- Loading overlay com spinner -->
+  <div class="chart-loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <span>Carregando histórico...</span>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div class="chart-error error-box" *ngIf="error && !loading">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    {{ error }}
+  </div>
+
+  <!-- Canvas do Chart.js — acessado via ViewChild('chartCanvas') -->
+  <canvas #chartCanvas></canvas>
+</div>

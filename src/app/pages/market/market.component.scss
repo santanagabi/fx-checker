@@ -1,0 +1,168 @@
+.market-page {
+  .page-hero {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+    .hero-subtitle { color: var(--color-text-secondary); margin-top: var(--space-sm); font-size: 0.9rem; }
+  }
+
+  // ─── Ticker ────────────────────────────────────────────────────────
+  .ticker-section { margin-bottom: var(--space-2xl); }
+
+  .ticker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-md);
+
+    @media (max-width: 480px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .ticker-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-align: left;
+    font-family: var(--font-family);
+    color: var(--color-text-primary);
+    width: 100%;
+
+    &:hover {
+      background: var(--color-bg-card-hover);
+      border-color: var(--color-border-strong);
+      transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    &.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary-dim);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+
+    &.error { opacity: 0.6; }
+
+    .ticker-pair {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      .ticker-flag { font-size: 1rem; }
+      .ticker-code { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); }
+    }
+
+    .ticker-rate {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .ticker-error {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      color: var(--color-danger);
+    }
+
+    .ticker-fav {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      padding: 0;
+      transition: color var(--transition-fast);
+
+      &:hover { color: #f59e0b; }
+    }
+  }
+
+  // ─── Chart Section ─────────────────────────────────────────────────
+  .chart-section {
+    padding: var(--space-xl);
+
+    @media (max-width: 640px) { padding: var(--space-lg) var(--space-md); }
+  }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+
+    .chart-pair-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+
+      .chart-flags { font-size: 2rem; }
+
+      .chart-pair-label {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .chart-pair-desc {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        margin: 4px 0 0;
+        strong { font-size: 1rem; }
+      }
+    }
+  }
+
+  .range-selector {
+    display: flex;
+    gap: 4px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 4px;
+
+    .range-btn {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: none;
+      color: var(--color-text-muted);
+      font-family: var(--font-family);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+
+      &:hover { color: var(--color-text-primary); background: var(--color-bg-card-hover); }
+
+      &.active {
+        background: var(--color-primary-dim);
+        color: var(--color-primary);
+      }
+
+      &:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+    }
+  }
+}

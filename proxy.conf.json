@@ -1,0 +1,9 @@
+[
+  {
+    "context": ["/api"],
+    "target": "https://api.frankfurter.app",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api": "" }
+  }
+]

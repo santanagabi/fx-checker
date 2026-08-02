@@ -1,0 +1,193 @@
+<section class="page converter-page">
+  <div class="container">
+
+    <!-- ─── Hero ─────────────────────────────────────────────────────────── -->
+    <div class="page-hero animate-fade-in">
+      <h1>Conversor de <span class="gradient-text">Câmbio</span></h1>
+      <p class="hero-subtitle">
+        Taxas em tempo real &mdash; Banco Central Europeu &bull; Frankfurter API
+      </p>
+    </div>
+
+    <!-- ─── Converter Card ───────────────────────────────────────────────── -->
+    <div class="converter-card glass-card animate-fade-in">
+
+      <!-- Formulário Reativo: [formGroup] conecta o FormGroup ao template -->
+      <form [formGroup]="form" class="converter-form">
+
+        <!-- Campo: Valor -->
+        <div class="form-field">
+          <label class="input-label" for="amount">Valor</label>
+          <input
+            id="amount"
+            type="number"
+            class="input-base amount-input"
+            formControlName="amount"
+            placeholder="0,00"
+            min="0.01"
+            step="any"
+            aria-label="Valor a converter"
+          />
+        </div>
+
+        <!-- Linha de moedas: De [picker] [swap] Para [picker] -->
+        <div class="currency-row">
+          <div class="form-field picker-field">
+            <label class="input-label">De</label>
+            <!--
+              [currencies]: @Input — passamos a lista carregada com async pipe
+              [selected]:   @Input — moeda atual do formulário
+              (selectedChange): @Output — evento emitido pelo picker ao selecionar
+              async pipe: faz subscribe + unsubscribe automático em currencies$
+              ?? []: se currencies$ ainda não emitiu, passa array vazio
+            -->
+            <app-currency-picker
+              [currencies]="(currencies$ | async) ?? []"
+              [selected]="form.value.from ?? 'USD'"
+              [disabled]="loading()"
+              (selectedChange)="onFromChange($event)"
+            />
+          </div>
+
+          <!-- SwapButton emite (swap) → swapCurrencies() inverte os valores -->
+          <app-swap-button (swap)="swapCurrencies()" />
+
+          <div class="form-field picker-field">
+            <label class="input-label">Para</label>
+            <app-currency-picker
+              [currencies]="(currencies$ | async) ?? []"
+              [selected]="form.value.to ?? 'BRL'"
+              [disabled]="loading()"
+              (selectedChange)="onToChange($event)"
+            />
+          </div>
+        </div>
+      </form>
+
+      <div class="divider"></div>
+
+      <!-- ─── Seção de Resultado ─────────────────────────────────────────── -->
+      <div class="result-section">
+
+        <!-- Estado: Carregando (Signal — avaliado com loading()) -->
+        <div class="result-loading" *ngIf="loading()">
+          <div class="spinner"></div>
+          <span>Buscando taxa...</span>
+        </div>
+
+        <!-- Estado: Erro (Signal — error()) -->
+        <div class="error-box" *ngIf="error() && !loading()">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ error() }}
+        </div>
+
+        <!--
+          Estado: Resultado
+          async pipe: faz subscribe em result$ e expõe o valor como 'result'
+          *ngIf com 'as': cria variável de template — só renderiza se result não for null
+        -->
+        <div class="result-display animate-fade-in" *ngIf="result$ | async as result">
+
+          <!-- Resumo visual da conversão -->
+          <div class="conversion-summary">
+            <div class="from-amount">
+              <span class="flag">{{ getFlag(result.from) }}</span>
+              <span>{{ result.amount | number:'1.2-2' }}</span>
+              <span class="currency-code">{{ result.from }}</span>
+            </div>
+            <div class="equals-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="m12 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="to-amount">
+              <span class="flag">{{ getFlag(result.to) }}</span>
+              <span class="gradient-text result-value">{{ result.result | number:'1.2-4' }}</span>
+              <span class="currency-code">{{ result.to }}</span>
+            </div>
+          </div>
+
+          <!-- Badge com taxa e data -->
+          <div class="rate-badge">
+            <span>1 {{ result.from }} = <strong>{{ result.rate | number:'1.4-6' }}</strong> {{ result.to }}</span>
+            <span class="sep">•</span>
+            <span class="rate-date">{{ result.date }}</span>
+          </div>
+
+          <!-- Ações do resultado -->
+          <div class="result-actions">
+            <button
+              class="btn btn-secondary"
+              (click)="saveConversion(result)"
+              [class.btn-saved]="saved()"
+              aria-label="Salvar conversão no histórico"
+            >
+              <svg *ngIf="!saved()" viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2"/>
+                <path d="M17 21v-8H7v8M7 3v5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <svg *ngIf="saved()" viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+              {{ saved() ? 'Salvo!' : 'Salvar conversão' }}
+            </button>
+
+            <button
+              class="btn btn-icon"
+              [class.active]="isFavorite()"
+              (click)="toggleFavorite()"
+              [attr.aria-label]="isFavorite() ? 'Remover dos favoritos' : 'Adicionar aos favoritos'"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18"
+                [attr.fill]="isFavorite() ? 'currentColor' : 'none'">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Placeholder: nenhuma conversão ainda -->
+        <div class="result-placeholder" *ngIf="!(result$ | async) && !loading() && !error()">
+          <div class="placeholder-icon">💱</div>
+          <p>Digite um valor e selecione as moedas para converter</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── Seção de Favoritos ──────────────────────────────────────────── -->
+    <!--
+      favoritesService.favorites() → lê o Signal (array de CurrencyPair)
+      *ngIf: só renderiza se houver favoritos (length > 0)
+    -->
+    <div class="favorites-section animate-fade-in"
+         *ngIf="favoritesService.favorites().length > 0">
+      <p class="section-title">Favoritos</p>
+      <div class="favorites-grid">
+        <!--
+          *ngFor sobre um Signal: Angular detecta mudanças no Signal e
+          re-renderiza a lista automaticamente quando favoritos mudam.
+        -->
+        <button
+          *ngFor="let fav of favoritesService.favorites()"
+          class="favorite-chip"
+          (click)="loadFavorite(fav)"
+          [attr.aria-label]="'Carregar ' + fav.from + ' para ' + fav.to"
+        >
+          {{ getFlag(fav.from) }} {{ fav.from }}
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none">
+            <path d="M5 12h14m-7-7 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFlag(fav.to) }} {{ fav.to }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>

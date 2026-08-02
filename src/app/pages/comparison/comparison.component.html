@@ -1,0 +1,127 @@
+<section class="page comparison-page">
+  <div class="container">
+
+    <!-- ─── Header ───────────────────────────────────────────────────────── -->
+    <div class="page-hero animate-fade-in">
+      <h1>Comparação de <span class="gradient-text">Moedas</span></h1>
+      <p class="hero-subtitle">Converta um valor para múltiplas moedas simultaneamente</p>
+    </div>
+
+    <!-- ─── Formulário de Comparação ─────────────────────────────────────── -->
+    <div class="comparison-card glass-card animate-fade-in">
+      <form [formGroup]="form" class="comparison-form" (ngSubmit)="compare()">
+
+        <div class="form-row">
+          <!-- Valor -->
+          <div class="form-field amount-field">
+            <label class="input-label" for="comp-amount">Valor</label>
+            <input
+              id="comp-amount"
+              type="number"
+              class="input-base amount-input"
+              formControlName="amount"
+              placeholder="0,00"
+              min="0.01"
+              step="any"
+              aria-label="Valor a comparar"
+            />
+          </div>
+
+          <!-- Moeda base -->
+          <div class="form-field base-field">
+            <label class="input-label">Moeda Base</label>
+            <app-currency-picker
+              [currencies]="(currencies$ | async) ?? []"
+              [selected]="form.value.base ?? 'USD'"
+              [disabled]="loading()"
+              (selectedChange)="onBaseChange($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Moedas destino: chips com toggle -->
+        <div class="targets-section">
+          <p class="input-label">Comparar com</p>
+          <div class="targets-grid">
+            <button
+              *ngFor="let code of selectedTargets()"
+              type="button"
+              class="target-chip active"
+              (click)="toggleTarget(code)"
+              [attr.aria-pressed]="true"
+            >
+              {{ code }}
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none">
+                <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Botão principal -->
+        <button
+          type="submit"
+          class="btn btn-primary compare-btn"
+          [disabled]="loading() || !form.valid"
+        >
+          <div *ngIf="loading()" class="spinner" style="width:18px;height:18px;border-width:2px"></div>
+          <svg *ngIf="!loading()" viewBox="0 0 24 24" width="18" height="18" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ loading() ? 'Comparando...' : 'Comparar' }}
+        </button>
+      </form>
+    </div>
+
+    <!-- ─── Erro ──────────────────────────────────────────────────────────── -->
+    <div class="error-box animate-fade-in" *ngIf="error()">
+      ⚠️ {{ error() }}
+    </div>
+
+    <!-- ─── Resultados da Comparação ─────────────────────────────────────── -->
+    <div class="results-section animate-fade-in" *ngIf="results().length > 0">
+      <p class="section-title">
+        Resultados para {{ form.value.amount | number:'1.2-2' }} {{ form.value.base }}
+      </p>
+
+      <div class="results-grid">
+        <!--
+          *ngFor sobre Signal results() — re-renderiza quando o Signal muda.
+          trackBy não é estritamente necessário aqui (lista pequena, não muda incrementalmente)
+          mas é uma boa prática para performance.
+        -->
+        <div class="result-row" *ngFor="let item of results()">
+          <div class="result-currency">
+            <span class="flag">{{ getFlag(item.currency) }}</span>
+            <span class="code">{{ item.currency }}</span>
+          </div>
+          <div class="result-value">
+            <span class="amount">{{ item.result | number:'1.2-4' }}</span>
+            <span class="rate">1 {{ form.value.base }} = {{ item.rate | number:'1.4-6' }}</span>
+          </div>
+          <!-- Barra visual de comparação proporcional -->
+          <div class="result-bar-wrapper">
+            <div
+              class="result-bar"
+              [style.width.%]="barPercent(item.result)"
+              [attr.aria-valuenow]="barPercent(item.result)"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              role="progressbar"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Estado vazio inicial ─────────────────────────────────────────── -->
+    <div class="empty-state animate-fade-in"
+         *ngIf="results().length === 0 && !loading() && !error()">
+      <div class="empty-icon">⚖️</div>
+      <p class="empty-title">Selecione as moedas e clique em Comparar</p>
+      <p class="empty-desc">Você verá uma comparação lado a lado com as taxas atuais</p>
+    </div>
+
+  </div>
+</section>

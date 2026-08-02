@@ -1,0 +1,95 @@
+<section class="page history-page">
+  <div class="container">
+
+    <!-- ─── Header ───────────────────────────────────────────────────────── -->
+    <div class="history-header animate-fade-in">
+      <div>
+        <h1>Histórico de <span class="gradient-text">Conversões</span></h1>
+        <p class="hero-subtitle">
+          {{ logService.log().length }} conversão(ões) registrada(s)
+        </p>
+      </div>
+      <!-- Botão Limpar Tudo — só aparece se houver entradas -->
+      <button
+        class="btn btn-danger"
+        *ngIf="logService.log().length > 0"
+        (click)="clear()"
+        aria-label="Limpar todo o histórico"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+          <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10 11v6m4-6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Limpar tudo
+      </button>
+    </div>
+
+    <!-- ─── Lista de Conversões ───────────────────────────────────────────── -->
+    <div class="log-list animate-fade-in" *ngIf="logService.log().length > 0">
+      <!--
+        *ngFor sobre logService.log() — um Signal.
+        Quando add() ou remove() são chamados, o Signal muda,
+        e Angular re-renderiza esta lista automaticamente.
+        trackBy: evita recriar todos os itens ao adicionar um novo.
+      -->
+      <article
+        *ngFor="let entry of logService.log(); trackBy: trackById"
+        class="log-entry"
+      >
+        <!-- Lado esquerdo: moedas e valores -->
+        <div class="log-main">
+          <div class="log-conversion">
+            <span class="log-from">
+              <span class="flag">{{ getFlag(entry.from) }}</span>
+              <strong>{{ entry.amount | number:'1.2-2' }}</strong>
+              <span class="code">{{ entry.from }}</span>
+            </span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" class="arrow">
+              <path d="M5 12h14m-7-7 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="log-to">
+              <span class="flag">{{ getFlag(entry.to) }}</span>
+              <strong class="gradient-text">{{ entry.result | number:'1.2-4' }}</strong>
+              <span class="code">{{ entry.to }}</span>
+            </span>
+          </div>
+          <div class="log-meta">
+            <span class="log-rate">1 {{ entry.from }} = {{ entry.rate | number:'1.4-6' }} {{ entry.to }}</span>
+            <span class="log-sep">•</span>
+            <time class="log-time" [attr.datetime]="entry.timestamp" [title]="entry.timestamp | date:'short':'':'pt-BR'">
+              {{ timeAgo(entry.timestamp) }}
+            </time>
+          </div>
+        </div>
+
+        <!-- Botão remover -->
+        <button
+          class="btn btn-icon btn-sm log-remove"
+          (click)="remove(entry.id)"
+          [attr.aria-label]="'Remover conversão de ' + entry.amount + ' ' + entry.from"
+          title="Remover"
+        >
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
+            <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </article>
+    </div>
+
+    <!-- ─── Estado Vazio ──────────────────────────────────────────────────── -->
+    <!--
+      *ngIf: só renderiza quando não há entradas.
+      Boa prática: sempre mostrar feedback claro para o usuário.
+    -->
+    <div class="empty-state animate-fade-in" *ngIf="logService.log().length === 0">
+      <div class="empty-icon">📋</div>
+      <p class="empty-title">Nenhuma conversão registrada</p>
+      <p class="empty-desc">
+        Faça uma conversão na página <strong>Conversor</strong> e clique em
+        "Salvar conversão" para ela aparecer aqui.
+      </p>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,163 @@
+// ─── Navbar ───────────────────────────────────────────────────────────────
+$navbar-height: 68px;
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-navbar);
+  background: rgba(7, 11, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  height: $navbar-height;
+
+  @media (max-width: 768px) { padding: 0 var(--space-md); }
+}
+
+// ─── Logo ─────────────────────────────────────────────────────────────────
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+
+  &:hover { opacity: 0.85; }
+
+  .logo-fx {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-checker {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+}
+
+// ─── Nav Links ────────────────────────────────────────────────────────────
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  @media (max-width: 640px) {
+    position: fixed;
+    top: $navbar-height;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(7, 11, 20, 0.98);
+    backdrop-filter: blur(20px);
+    padding: var(--space-lg);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--transition-normal);
+    z-index: var(--z-navbar);
+
+    &.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-card);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  // RouterLinkActive adiciona esta classe quando a rota está ativa
+  &.active {
+    color: var(--color-primary);
+    background: var(--color-primary-dim);
+  }
+
+  .nav-icon { font-size: 1rem; }
+
+  @media (max-width: 640px) {
+    padding: var(--space-md);
+    font-size: 1.1rem;
+    border-radius: var(--radius-md);
+  }
+}
+
+// ─── Hamburger ────────────────────────────────────────────────────────────
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+
+  @media (max-width: 640px) { display: flex; }
+
+  span {
+    display: block;
+    height: 2px;
+    background: var(--color-text-secondary);
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+    transform-origin: center;
+  }
+
+  &.open {
+    span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  }
+
+  &:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+}
+
+// ─── Mobile Overlay ───────────────────────────────────────────────────────
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-navbar) - 1);
+
+  @media (min-width: 641px) { display: none; }
+}
+
+// ─── Main Content ─────────────────────────────────────────────────────────
+main { min-height: calc(100vh - #{$navbar-height}); }

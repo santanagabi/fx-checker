@@ -1,0 +1,113 @@
+<section class="page market-page">
+  <div class="container">
+
+    <!-- ─── Header ───────────────────────────────────────────────────────── -->
+    <div class="page-hero animate-fade-in">
+      <h1>Mercado <span class="gradient-text">ao Vivo</span></h1>
+      <p class="hero-subtitle">Taxas atualizadas a cada 60 segundos &bull; Banco Central Europeu</p>
+    </div>
+
+    <!-- ─── Ticker Strip ─────────────────────────────────────────────────── -->
+    <div class="ticker-section animate-fade-in">
+
+      <!-- Loading skeleton -->
+      <div class="ticker-grid" *ngIf="tickerLoading() && tickerItems().length === 0">
+        <div class="ticker-card skeleton" *ngFor="let i of [1,2,3,4,5,6,7,8]" style="height:96px"></div>
+      </div>
+
+      <!-- Ticker items — *ngFor sobre Signal tickerItems() -->
+      <div class="ticker-grid" *ngIf="tickerItems().length > 0">
+        <button
+          *ngFor="let item of tickerItems()"
+          class="ticker-card"
+          [class.active]="isActivePair(item.pair)"
+          [class.error]="item.error"
+          (click)="selectPair(item.pair)"
+          [attr.aria-label]="item.pair.from + '/' + item.pair.to + ': ' + item.rate"
+          [attr.aria-pressed]="isActivePair(item.pair)"
+        >
+          <div class="ticker-pair">
+            <span class="ticker-flag">{{ getFlag(item.pair.from) }}</span>
+            <span class="ticker-code">{{ item.pair.from }}/{{ item.pair.to }}</span>
+            <span class="ticker-flag">{{ getFlag(item.pair.to) }}</span>
+          </div>
+          <div class="ticker-rate" *ngIf="!item.error">
+            {{ item.rate | number:'1.2-4' }}
+          </div>
+          <div class="ticker-error" *ngIf="item.error">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none">
+              <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Erro
+          </div>
+          <button
+            class="ticker-fav"
+            (click)="$event.stopPropagation(); toggleFavorite(item.pair)"
+            [attr.aria-label]="'Favoritar ' + item.pair.from + '/' + item.pair.to"
+          >
+            <svg viewBox="0 0 24 24" width="12" height="12"
+              [attr.fill]="favoritesService.isFavorite(item.pair) ? 'currentColor' : 'none'">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+        </button>
+      </div>
+
+      <!-- Erro no ticker -->
+      <div class="error-box" *ngIf="tickerError()">
+        ⚠️ {{ tickerError() }}
+      </div>
+    </div>
+
+    <!-- ─── Seção do Gráfico ──────────────────────────────────────────────── -->
+    <div class="chart-section glass-card animate-fade-in">
+
+      <!-- Header do gráfico -->
+      <div class="chart-header">
+        <div class="chart-pair-info">
+          <span class="chart-flags">
+            {{ getFlag(activePair().from) }} {{ getFlag(activePair().to) }}
+          </span>
+          <div>
+            <h2 class="chart-pair-label">{{ activePair().from }}/{{ activePair().to }}</h2>
+            <p class="chart-pair-desc" *ngIf="activeTickerItem() && !activeTickerItem()!.error">
+              Taxa atual: <strong class="gradient-text">{{ activeTickerItem()!.rate | number:'1.4-6' }}</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Seletor de range -->
+        <div class="range-selector" role="group" aria-label="Selecionar período">
+          <button
+            *ngFor="let r of chartRanges"
+            class="range-btn"
+            [class.active]="activeRange() === r.value"
+            (click)="selectRange(r.value)"
+            [attr.aria-pressed]="activeRange() === r.value"
+          >
+            {{ r.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Gráfico — @Input() recebe activePair e activeRange via Signal -->
+      <app-rate-chart
+        [from]="activePair().from"
+        [to]="activePair().to"
+        [range]="activeRange()"
+      />
+      <!--
+        Quando activePair() ou activeRange() mudam:
+        1. Angular re-avalia o template (detecta mudança no Signal)
+        2. Os @Input() do RateChartComponent são atualizados
+        3. ngOnChanges() do RateChartComponent é chamado
+        4. O Subject refresh$ emite → switchMap cancela a request anterior
+        5. Nova request HTTP com os novos parâmetros
+      -->
+    </div>
+
+  </div>
+</section>
